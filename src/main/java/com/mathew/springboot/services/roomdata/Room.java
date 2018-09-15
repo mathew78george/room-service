@@ -16,7 +16,7 @@ public class Room {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	@Column(name = "NAME")
-	private String roomName;
+	private String name;
 	@Column(name = "ROOM_NUMBER")
 	private String roomNumber;
 	@Column(name = "BED_INFO")
@@ -34,12 +34,12 @@ public class Room {
 		this.id = id;
 	}
 
-	public String getRoomName() {
-		return roomName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
+	public void setName(String roomName) {
+		this.name = roomName;
 	}
 
 	public String getRoomNumber() {

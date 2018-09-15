@@ -14,20 +14,43 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/rooms")
-@Api(value="rooms", description = "Data service operations on rooms", tags=("rooms"))
+@Api(value = "rooms", description = "Data service operations on rooms", tags = ("rooms"))
 public class RoomController {
 
 	@Autowired
-	private RoomRepository roomRepo;
+	private static RoomRepository roomRepo;
+	@Autowired
+	private RoomDataService roomService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	@ApiOperation(value="Get All Rooms", notes="Gets all rooms in the system", nickname="getRooms")
+	@RequestMapping(value = "/rooms", method = RequestMethod.GET)
+	@ApiOperation(value = "Get All Rooms", notes = "Gets all rooms in the system", nickname = "getRooms")
 	public List<Room> findAllRooms(@RequestParam(name = "roomNumber", required = false) String roomNumber) {
 		if (StringUtils.isNotEmpty(roomNumber)) {
-			return Collections.singletonList(roomRepo.findByRoomNumber(roomNumber));
+			return Collections.singletonList(roomService.getRoomDataByRoomNumber(roomNumber));
 		}
-		return (List<Room>) roomRepo.findAll();
+		return (List<Room>) roomService.getRoomData();
+	}
+
+	public static void autoWireTest() {
+		roomRepo.findAll();
+	}
+
+	@RequestMapping(value = "teststringfromroomserviceV1", method = RequestMethod.GET)
+	public String getTestStringV1(@RequestParam(name = "teststring", required = true) String teststring) {
+		System.out.println("Inside getTestString");
+		return "Hi From RoomController-->" + teststring;
+	}
+
+	@RequestMapping(value = "teststringfromroomservice", method = RequestMethod.GET)
+	public String getTestString() {
+		System.out.println("Inside getTestString");
+		return "Hi From RoomController ";
+	}
+
+	@RequestMapping(value = "roombynumber", method = RequestMethod.GET)
+	public Room getRoomDataByRoomNumber(@RequestParam(name = "roomNumber", required = true) String roomNumber) {
+		System.out.println("Inside getRoomDataByRoomNumber " + roomNumber);
+		return roomService.getRoomDataByRoomNumber(roomNumber);
 	}
 
 }
